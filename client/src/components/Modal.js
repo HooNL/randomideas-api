@@ -1,15 +1,16 @@
 class Modal {
   constructor() {
-    this._modal = document.getElementById("modal")
-    this._modalBtn = document.getElementById("modal-btn")
-    this._closeBtn = document.getElementById("close-btn")
+    this._modal = document.querySelector("#modal")
+    this._modalBtn = document.querySelector("#modal-btn")
+    this._closeBtn = document.querySelector("#close-btn")
     this.addEventListeners()
   }
 
   addEventListeners() {
-    window.addEventListener("click", this.outsideClick.bind(this))
     this._modalBtn.addEventListener("click", this.open.bind(this))
     this._closeBtn.addEventListener("click", this.close.bind(this))
+    window.addEventListener("click", this.outsideClick.bind(this))
+    document.addEventListener("closemodal", () => this.close())
   }
 
   open() {
@@ -19,6 +20,7 @@ class Modal {
   close() {
     this._modal.style.display = "none"
   }
+
   outsideClick(e) {
     if (e.target === this._modal) {
       this.close()
@@ -26,4 +28,4 @@ class Modal {
   }
 }
 
-export default Modal;
+export default Modal
