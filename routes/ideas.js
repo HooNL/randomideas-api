@@ -98,7 +98,7 @@ router.delete("/:id", async (req, res) => {
         success: true,
         message: "Idea deleted successfully",
         data: {},
-      })
+      }) 
     }
 
     // If usernames do not match, return unauthorized

@@ -25,7 +25,7 @@ class IdeaForm {
     // Save username to localStorage
     localStorage.setItem("username", this._form.elements.username.value)
 
-    const idea = {
+    const idea = { 
       username: this._form.elements.username.value,
       text: this._form.elements.text.value,
       tag: this._form.elements.tag.value,
