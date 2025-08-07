@@ -68,7 +68,6 @@ header {
   right: 10px;
   align-items: center;
   justify-content: center;
-
 }
 #close-btn:hover {
   background: #000;
@@ -139,6 +138,14 @@ form label {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#tag {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
 .tag {
   display: inline-block;
   background-color: #333;
@@ -171,6 +178,11 @@ form label {
 
 .tag-inventions {
   background: orange;
+  color: #000;
+}
+.tag-design {
+  background: #ff69b4;
+  color: #000;
 }
 
 .delete {
@@ -191,6 +203,14 @@ form label {
 .date {
   color: #999;
   font-size: 14px;
+}
+
+.author-date {
+  display: block;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
 }
 
 @media (max-width: 768px) {

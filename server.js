@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config()
 const port = process.env.PORT || 5000
 const connectDB = require("./config/db")
 const path = require("path")
+const cors = require("cors")
 
 // Connect to MongoDB
 connectDB()
@@ -11,6 +12,16 @@ connectDB()
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5000",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+)
 
 // Serve static files from the React app
 // if (process.env.NODE_ENV === "production") {
