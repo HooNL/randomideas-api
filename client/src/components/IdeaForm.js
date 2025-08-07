@@ -14,6 +14,17 @@ class IdeaForm {
   async handleSubmit(e) {
     e.preventDefault()
 
+    if (
+      !this._form.elements.username.value ||
+      !this._form.elements.text.value ||
+      !this._form.elements.tag.value
+    ) {
+      alert("Please fill in all fields before submitting your idea.")
+    }
+
+    // Save username to localStorage
+    localStorage.setItem("username", this._form.elements.username.value)
+
     const idea = {
       username: this._form.elements.username.value,
       text: this._form.elements.text.value,
@@ -29,19 +40,24 @@ class IdeaForm {
 
     this._form.reset()
 
+    this.render()
+
     document.dispatchEvent(new Event("closemodal"))
   }
 
   render() {
     this._formModal.innerHTML = `
-      <button id="close-btn" title="Close Modal">
-        <i class="fas fa-times"></i>
-      </button>
-      <form id="idea-form">
+    <form id="idea-form">
+    <button type="button" id="close-btn" title="Close Modal">
+      <i class="fas fa-times"></i>
+    </button>
         <div class="form-control">
           <label for="idea-text">Enter a Username</label>
-          <input type="text" name="username" id="username" title="Enter your username" placeholder="Enter your username"
-            required />
+          <input type="text" name="username" id="username" title="Enter your username" placeholder="Enter your username" value="${
+            localStorage.getItem("username")
+              ? localStorage.getItem("username")
+              : ""
+          }" />
         </div>
         <div class="form-control">
           <label for="idea-text">What's Your Idea?</label>
@@ -50,7 +66,6 @@ class IdeaForm {
         <div class="form-control">
           <label for="tag">Tag</label>
           <select name="tag" id="tag">
-            <option name='tagSelected' value="" disabled selected>Select a tag</option>
             <option value="technology">Technology</option>
             <option value="software">Software</option>
             <option value="business">Business</option>

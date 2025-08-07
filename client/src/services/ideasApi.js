@@ -7,7 +7,7 @@ class IdeasApi {
     getIdeas() {
         return axios.get(this._baseUrl)
     }
-
+ 
     createIdea(idea) {
         return axios.post(this._baseUrl, idea)
     }

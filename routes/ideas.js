@@ -58,22 +58,28 @@ router.post("/", async (req, res) => {
 // Update an existing idea
 router.put("/:id", async (req, res) => {
   try {
-    const updatedIdea = await Idea.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: {
-          text: req.body.text,
-          tag: req.body.tag,
+    const idea = await Idea.findById(req.params.id)
+    // Check if the idea exists
+    if (idea.username === req.body.username) {
+      const updatedIdea = await Idea.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: {
+            text: req.body.text,
+            tag: req.body.tag,
+          },
         },
-      },
-      {
-        new: true,
-      }
-    )
-    if (!updatedIdea) {
-      return res.status(404).json({ success: false, message: "Idea not found" })
+        {
+          new: true,
+        }
+      )
+      return res.json({ success: true, data: updatedIdea })
     }
-    res.json({ success: true, data: updatedIdea })
+    // If usernames do not match, return unauthorized
+    res.status(403).json({
+      success: false,
+      message: "U are not authorized to update this idea",
+    })
   } catch (error) {
     console.error(error)
     res.status(500).json({ success: false, message: "Server error" })
@@ -83,11 +89,25 @@ router.put("/:id", async (req, res) => {
 // Delete an idea
 router.delete("/:id", async (req, res) => {
   try {
-    const deletedIdea = await Idea.findByIdAndDelete(req.params.id)
-    if (!deletedIdea) {
-      return res.status(404).json({ success: false, message: "Idea not found" })
+    const idea = await Idea.findById(req.params.id)
+
+    // Match the usernames
+    if (idea.username === req.body.username) {
+      await Idea.findByIdAndDelete(req.params.id)
+      return res.json({
+        success: true,
+        message: "Idea deleted successfully",
+        data: {},
+      })
     }
-    res.json({ success: true, message: "Idea deleted successfully", data: {} })
+
+    // If usernames do not match, return unauthorized
+    res
+      .status(403)
+      .json({
+        success: false,
+        message: "U are not authorized to delete this idea",
+      })
   } catch (error) {
     console.error(error)
     res.status(500).json({ success: false, message: "Server error" })

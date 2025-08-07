@@ -13,6 +13,13 @@ class IdeaList {
     this._validTags.add("health")
     this._validTags.add("inventions")
     this._validTags.add("design")
+
+    this._ideaListElement.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-idea')) {
+        const ideaId = e.target.closest('.card').dataset.id
+        this.deleteIdea(ideaId)
+      }
+    })
   }
 
   async getIdeas() {
@@ -41,14 +48,25 @@ class IdeaList {
     return tagClass
   }
 
+
+  async deleteIdea(id) {
+    try {
+      await IdeasApi.deleteIdea(id)
+      this._ideas = this._ideas.filter((idea) => idea.id !== id)
+      this.render()
+    } catch (error) {
+      console.error("Error deleting idea:", error)
+    }
+  }
+
   render() {
     this._ideaListElement.innerHTML = this._ideas
       .map((idea) => {
         const localDate = new Date(idea.date).toLocaleDateString()
         return `    
          <div class="card">
-        <button class="delete" title="Delete Idea"><i class="fas fa-times"></i></button>
-        <h3>
+        <button id="${idea.id}" class="delete" title="Delete Idea"><i class="fas fa-times"></i></button>
+        <h3> 
             ${idea.text}
         </h3>
         <p class="tag ${this.getTagClass(
